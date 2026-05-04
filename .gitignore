@@ -1,0 +1,31 @@
+# Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# PyInstaller (Archivos de compilación)
+build/
+dist/
+*.spec
+
+# Datos y Reportes
+data/reportes/*.xlsx
+# Bloquear archivos temporales/bloqueos de Excel
+~$*.xlsx
+~$*.xls
+
+# Windows-specific (para tu laptop Windows)
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Notebooks (por si usas Colab localmente)
+.ipynb_checkpoints
