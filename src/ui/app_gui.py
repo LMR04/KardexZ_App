@@ -150,9 +150,24 @@ class KardexApp(ctk.CTk):
     def export_data(self):
         folder = filedialog.askdirectory()
         if folder:
-            reports = {
-                "Kardex_Por_Almacen": self.df_detallado,
-                "Kardex_Consolidado": self.df_consolidado
-            }
-            success, msg = self.handler.save_reports(reports, folder)
-            messagebox.showinfo("Exportación", msg)
+            try:
+                # Volvemos a ejecutar la validación para obtener la tabla completa
+                validator = InventoryValidator(self.df_detallado, self.df_consolidado)
+                inconsistencias, comparativa = validator.check_inconsistencies()
+                
+                # Preparamos el diccionario con los TRES reportes exigidos
+                reports = {
+                    "Kardex_Por_Almacen": self.df_detallado,
+                    "Kardex_Consolidado": self.df_consolidado,
+                    "Reporte_Inconsistencias": comparativa  # Este es el nuevo
+                }
+                
+                success, msg = self.handler.save_reports(reports, folder)
+                if success:
+                    messagebox.showinfo("Exportación Exitosa", 
+                        f"Se han generado los 3 archivos Excel en:\n{folder}\n\n"
+                        "1. Kardex por Almacén\n2. Kardex Consolidado\n3. Reporte de Inconsistencias")
+                else:
+                    messagebox.showerror("Error", msg)
+            except Exception as e:
+                messagebox.showerror("Error al exportar", str(e))
